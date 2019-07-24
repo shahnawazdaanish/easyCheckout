@@ -1,0 +1,215 @@
+<div #htmlContainer [innerHTML]="trustedHTML"></div>
+
+<div id="saved_card2" class="saved_card">
+  <div class="col-md-12">
+    <ul class="save_card_items">
+
+      <div class="card-list-loading"
+           *ngIf="isLoading$.getValue() && session && session.data && session.data.session_data">
+        <div class="anim-wrapper" *ngFor="let wr of numberOfStoredCard">
+          <div class="anim-wrapper-cell">
+            <div class="anim-image"></div>
+            <div class="anim-text">
+              <div class="anim-text-line"></div>
+              <div class="anim-text-line"></div>
+              <div class="anim-text-line"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <ng-container *ngFor="let card of cardsList; let i = index">
+        <li (click)="setSelectionToggle(card, i);" [ngClass]="{ 'highlight' : card.selected }"
+            [class.is_in_offer]="card.offer">
+          <div class="pull-left offer_top_display" *ngIf="isCardInOffer(card)">
+            <p>
+              <img [src]="'assets/checkout_assets/img/gift-icon.png'" alt="">
+              {{ card.offer.discountTitle.substr(0, 22) + '...' }}
+            </p>
+          </div>
+          <div class="pull-left pt5" [class.mt0]="card.offer != null">
+            <img class="save_card_icon"
+                 [src]="'assets/checkout_assets/img/cards/'+ this.card.type.toLowerCase() +'.png'" alt="">
+          </div>
+          <div class="pull-left" style="cursor: pointer;" [class.mt0]="card.offer != null">
+            <p>{{ card.cardNo }}</p>
+            <span class="bank_names">{{ card.bankName }}</span>
+          </div>
+          <div [ngClass]="{'hidden': card.withoutOTP == '1' }" class="pull-right pos_relative saved_card_cvv"
+               (click)="$event.stopPropagation()">
+            <input [disabled]="cvv == 'xxxx'" type="tel" (keyup)="checkCvv()" [(ngModel)]="cvv"
+                   class="form-control mask-text" id="cvv-{{ i }}" autofocus (focus)="card.selected"
+                   pattern="[0-9]*" inputmode="numeric"
+                   placeholder="CVV/CVC" name="card-number" maxlength="4" #list_cvv>
+            <img class="cvc_icon" [src]="'assets/checkout_assets/img/cards/cvc.svg'" alt="">
+          </div>
+          <div *ngIf="!card.selected" class="pull-right cancel_icon" (click)="$event.stopPropagation()">
+            <a href="javascript:void(0)" (click)="card.deleted = true">
+              <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 viewBox="0 0 432.6 486.4" style="enable-background:new 0 0 432.6 486.4;" xml:space="preserve">
+<style type="text/css">
+	.st10 {
+    fill: #A8B0B9;
+  }
+</style>
+<g>
+	<g>
+		<path class="st10" d="M419.1,70H317.9V53.5c0-29.5-24-53.5-53.5-53.5h-96.2c-29.5,0-53.5,24-53.5,53.5V70H13.5C6,70,0,76,0,83.5
+			S6,97,13.5,97h24.4v317.2c0,39.8,32.4,72.2,72.2,72.2h212.4c39.8,0,72.2-32.4,72.2-72.2V97h24.4c7.5,0,13.5-6,13.5-13.5
+			S426.6,70,419.1,70z M141.7,53.5c0-14.6,11.9-26.5,26.5-26.5h96.2c14.6,0,26.5,11.9,26.5,26.5V70H141.7V53.5z M367.7,414.2
+			c0,24.9-20.3,45.2-45.2,45.2H110.1c-24.9,0-45.2-20.3-45.2-45.2V97h302.9v317.2H367.7z"/>
+		<path class="st10" d="M216.3,411c7.5,0,13.5-6,13.5-13.5V158.9c0-7.5-6-13.5-13.5-13.5s-13.5,6-13.5,13.5v238.5
+			C202.8,404.9,208.8,411,216.3,411z"/>
+		<path class="st10" d="M128.2,396.1c7.5,0,13.5-6,13.5-13.5V173.7c0-7.5-6-13.5-13.5-13.5c-7.5,0-13.5,6-13.5,13.5v208.9
+			C114.7,390.1,120.8,396.1,128.2,396.1z"/>
+		<path class="st10" d="M304.4,396.1c7.5,0,13.5-6,13.5-13.5V173.7c0-7.5-6-13.5-13.5-13.5s-13.5,6-13.5,13.5v208.9
+			C290.9,390.1,296.9,396.1,304.4,396.1z"/>
+	</g>
+</g>
+</svg>
+            </a>
+            <!--<a href="javascript:void(0)">-->
+            <!--<img [hidden]="!deleteB[i]" (click)="card.deleted = true" (mouseenter)="deleteB[i] =false" (mouseleave)="deleteB[i] = true" class="cancel_icon_default" [src]="'assets/checkout_assets/img/cards/cancel2.svg'" alt="">-->
+            <!--<img [hidden]="!deleteH[i]" (click)="card.deleted = true" (mouseenter)="deleteH[i] = true" (mouseleave)="deleteH[i] = false" class="cancel_icon_hover" [src]="'assets/checkout_assets/img/cards/cancel.svg'" alt="">-->
+            <!--</a>-->
+          </div>
+          <div id="ssl_saved_card_emi" class="ssl_saved_card_emi" *ngIf="card.selected && isCardInEmi(card.cardNo)">
+            <div class="pull-left pos_relative">
+              <p>{{ "want_to_pay_emi" | translate }}?</p>
+            </div>
+            <div class="pull-right pos_relative">
+                <span>
+                  <!--<select class="" name="" (click)="$event.stopPropagation()">-->
+                  <!--<option value="">Avail EMI</option>-->
+                  <!--<option value="">3 Month</option>-->
+                  <!--<option value="">6 Month</option>-->
+                  <!--<option value="">12 Month</option>-->
+                  <!--</select>-->
+                  <select [disabled]="!currentEmi"
+                          name="countryControl" [(ngModel)]="card.emiTenure" #emiTenure
+                          class="" (click)="$event.stopPropagation()" style="max-width: 90px;">
+                    <option (select)="true" value="undefined">{{ 'avail_emi' | translate }}</option>
+                    <ng-container *ngIf="emiList && emiList.data.data !== undefined && currentEmi != null">
+                      <option [value]="tenure.tenure"
+                              *ngFor="let tenure of currentEmi.emiBankTenureDesc; let i = index">
+                        <span [innerHTML]="tenure.desc"></span>
+                      </option>
+                    </ng-container>
+                  </select>
+                </span>
+            </div>
+          </div>
+          <div id="ssl_saved_card_emi2" class="ssl_saved_card_emi" *ngIf="!card.selected && card.deleted">
+            <div class="pull-left pos_relative">
+              <p>{{ "want_to_delete_card" | translate }}?</p>
+            </div>
+            <div class="pull-right pos_relative ssl_card_delete_action">
+              <a href="javascript:void(0);" (click)="$event.stopPropagation(); deleteCard(card)">
+                {{ "yes" | translate }}
+              </a>
+              <span></span>
+              <a class="ssl_card_delete_cancel" href="javascript:void(0)"
+                 (click)="$event.stopPropagation(); card.deleted = false">
+                {{ "no" | translate }}
+              </a>
+            </div>
+          </div>
+        </li>
+      </ng-container>
+      <!--<li>-->
+      <!--<div class="pull-left">-->
+      <!--<img class="save_card_icon" src="images/cards/visa2.png" alt="">-->
+      <!--</div>-->
+      <!--<div class="pull-left">-->
+      <!--<p>**** **** **** 1234</p>-->
+      <!--</div>-->
+      <!--<div class="pull-right pos_relative">-->
+      <!--<input type="password" class="form-control" id="email" placeholder="CVV/CVC" name="card-number">-->
+      <!--<img class="cvc_icon" src="images/cards/cvc.svg" alt="">-->
+      <!--</div>-->
+      <!--<div class="pull-right cancel_icon">-->
+      <!--<a href="#">-->
+      <!--<img class="cancel_icon_default" src="images/cards/cancel2.svg" alt="">-->
+      <!--<img class="cancel_icon_hover" src="images/cards/cancel.svg" alt="">-->
+      <!--</a>-->
+      <!--</div>-->
+      <!--</li>-->
+      <li>
+        <div class="pull-left">
+          <img class="save_card_icon" [src]="'assets/checkout_assets/img/cards/new-card.png'" alt="">
+        </div>
+        <div class="pull-left">
+          <p class="mt-10"><a class="back_top_card_input_area" (click)="loadCardEntryPage()" href="javascript:void(0)">{{
+            "payother" | translate }}</a></p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+<div id="saved_card" class="row" *ngIf="session.data.request.is_tokenize != 1 && 1!=1">
+  <div class="col-md-12">
+    <ul class="save_card_items">
+      <div *ngIf="cardsList && cardsList.length > 0">
+        <ng-container *ngFor="let card of cardsList; let i = index">
+          <li (click)="setSelectionToggle(card)" [ngClass]="{ 'highlight' : card.selected }">
+            <div class="float-left">
+              <img class="save_card_icon" [src]="'assets/images/visa2.png'" alt="">
+            </div>
+            <div class="float-left">
+              <p>{{ card.cardNo }}</p>
+            </div>
+            <div class="float-right pos_relative" (click)="$event.stopPropagation()">
+              <input type="password" (keyup)="checkCvv()" [(ngModel)]="cvv" autofocus class="form-control"
+                     id="email_{{ i }}" placeholder="CVV/CVC" maxlength="4" name="card-number">
+              <img class="cvc_icon" [src]="'assets/images/cvc.svg'" alt="">
+            </div>
+          </li>
+          <hr>
+        </ng-container>
+      </div>
+      <li (click)="loadCardEntryPage()">
+        <div class="float-left">
+          <img class="save_card_icon" [src]="'assets/images/new-card.png'" alt="">
+        </div>
+        <div class="float-left">
+          <p class="mt-10">Pay Using Another Card</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>
+
+<!-- TOKENIZE CARDS -->
+<div id="saved_card" class="row" *ngIf="session.data.request.is_tokenize == 1 && 1!=1">
+  <div class="col-md-12">
+    <ul class="save_card_items">
+      <div *ngIf="session.data.session_data.cards && session.data.session_data.cards.length > 0">
+        <ng-container *ngFor="let card of session.data.session_data.cards; let i = index">
+          <li class="wow zoomIn" (click)="setTokenizeSelectionToggle(card)" [ngClass]="{ 'highlight' : card.selected }">
+            <div class="float-left">
+              <img class="save_card_icon" [src]="'assets/images/visa2.png'" alt="">
+            </div>
+            <div class="float-left">
+              <p>{{ card.card_no }}</p>
+            </div>
+            <div class="float-right pos_relative" (click)="$event.stopPropagation()">
+              <input type="password" (keyup)="checkCvv()" [(ngModel)]="cvv" autofocus class="form-control"
+                     id="token_email_{{ i }}" placeholder="CVV/CVC" maxlength="4" name="card-number">
+              <img class="cvc_icon" [src]="'assets/images/cvc.svg'" alt="">
+            </div>
+          </li>
+          <hr>
+        </ng-container>
+      </div>
+      <li (click)="loadCardEntryPage()">
+        <div class="float-left">
+          <img class="save_card_icon" [src]="'assets/images/new-card.png'" alt="">
+        </div>
+        <div class="float-left">
+          <p class="mt-10">Pay Using Another Card</p>
+        </div>
+      </li>
+    </ul>
+  </div>
+</div>

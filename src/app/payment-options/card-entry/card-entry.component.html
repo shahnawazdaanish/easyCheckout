@@ -1,0 +1,523 @@
+<div #htmlContainer [innerHTML]="trustedHTML"></div>
+<!--<form id="cform"-->
+<!--card-->
+<!--container=".card-wrapper2"-->
+<!--[formatting]="true"-->
+<!--[masks]="{cardNumber: '•'}"-->
+<!--[debug]="true"-->
+<!--myMatchHeight="mybox"-->
+<!--style="margin-bottom: 35px;"-->
+<!--&gt;-->
+<!--{{ currentStep }} {{ currentGateway }}-->
+<form id="cform"
+      style="margin-bottom: 0px;"
+>
+  <div class="new_card">
+
+    <!--{{ existingUser }} -&#45;&#45; {{ currentStep }}-->
+    <div *ngIf="currentStep === '' || currentStep == 'entry-page'" class="animated" style="padding:20px 16px;">
+      <div class="row">
+        <!--<div class="col-md-12 offer-alert" *ngIf="selected_offer && selected_offer.discountTitle != ''">-->
+          <!--<ngb-alert [type]="'success'" (close)="removeOffer()">-->
+            <!--<img [src]="'assets/checkout_assets/img/gift-icon.png'" alt="">-->
+            <!--{{ selected_offer.discountTitle }}-->
+          <!--</ngb-alert>-->
+        <!--</div>-->
+        <div class="col-md-12">
+          <ul class="pull-left supported_card">
+            <li>
+              <img [ngClass]="{'active': this.card.brand == 'visa' || this.card.brand == undefined}" class="active"
+                   [src]="'assets/images/cards/new/visa.png'" alt="">
+            </li>
+            <li>
+              <img [ngClass]="{'active': this.card.brand == 'mastercard' || this.card.brand == undefined}"
+                   class="active" [src]="'assets/images/cards/new/mastercard.png'" alt="">
+            </li>
+            <li>
+              <img [ngClass]="{'active': this.card.brand == 'amex' || this.card.brand == undefined}" class="active"
+                   [src]="'assets/images/cards/new/amex.png'" alt="">
+            </li>
+          </ul>
+          <a class="pull-right back_to_card" data-toggle="tab" href="#menu1" (click)="changeView('cards')">
+            {{ 'ocards' | translate }}
+          </a>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="input-group pos_relative wow zoomIn" data-wow-duration="0.1"
+               data-wow-delay="0.1"
+               [class.has-error]="isCardNumberError && card.number != ''"
+          >
+            <input type="tel" class="form-control input_numeric_field" autocomplete="off" (autocomplete)="false"
+                   placeholder="{{ 'entercardnum' | translate }}" name="number" autofocus
+                   id="ccnum" card-number (ngModelChange)="listenChange($event)" [(ngModel)]="card.number"
+                   #ccnum (keyup)="validateCC()" appCleaveJS [options]="number_options" maxlength="20"
+                   [style.border-right]=" !(emiList && emiList.data) ? '1px solid #d1d5dc' : ''">
+            <ng-template #emiTooltip>
+              {{ 'emi' | translate}}<br>
+              <ul class="list-unstyled">
+                <li *ngFor="let emi of emiList.data.data.emi; let i = index">
+                  <b>{{ emi.bankName.toUpperCase() }}</b>
+                </li>
+              </ul>
+              <!--<b>Brac Bank</b>,<b>EBL</b>,<b>DBBL</b> -->
+            </ng-template>
+            <span [ngClass]="{'emi_active' : currentEmi }" class="input-group-addon emi_tooltip"
+                  placement="{{ (isFull || isMobile) ? 'top' : 'right'}}" [ngbTooltip]="emiTooltip" *ngIf="emiList && emiList.data">
+                <!--<select [disabled]="!currentEmi" class="" name="">-->
+              <!--<option value="">Avail EMI</option>-->
+              <!--<ng-container *ngIf="currentEmi" >-->
+              <!--<option [value]="tenure.tenure"-->
+              <!--*ngFor="let tenure of currentEmi.emiBankTenureDesc; let i = index">-->
+              <!--<span [innerHTML]="tenure.desc"></span>-->
+              <!--</option>-->
+              <!--</ng-container>-->
+              <!--</select>-->
+              <!---->
+              <!--{{ card.emiTenure + 'xxxx'}}-->
+                  <span class="caret"></span>
+                  <select [disabled]="!currentEmi"
+                          name="countryControl" (change)="checkEMITenure()" [(ngModel)]="card.emiTenure" #emiTenure
+                          class="">
+                    <option (select)="true" value="undefined">{{ 'aemi' | translate }}</option>
+                    <ng-container *ngIf="emiList && emiList.data.data !== undefined && currentEmi != null && card.emi">
+                      <option [value]="tenure.tenure"
+                              *ngFor="let tenure of currentEmi.emiBankTenureDesc; let i = index">
+                        <span [innerHTML]="tenure.desc"></span>
+                      </option>
+                    </ng-container>
+                  </select>
+            </span>
+          </div>
+          <div class="offer_top_display mt-m-5" *ngIf="offer_availed && selected_offer && selected_offer.discountTitle != ''">
+            <p>
+              <img [src]="'assets/checkout_assets/img/gift-icon.png'" alt="">
+              {{ selected_offer.discountTitle }}
+            </p>
+          </div>
+          <div class="offer_top_display mt-m-5" *ngIf="offerList && removing_offer_alert && (removing_offer_alert || card.emiTenure)">
+            <p>
+              <img [src]="'assets/checkout_assets/img/gift-icon.png'" alt="">
+              {{ removing_offer_alert }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-6 pad_rit_5 wow zoomIn" data-wow-duration="0.1"
+             data-wow-delay="0.1"
+             [class.has-error]="isCardExpiryError && card.expiry != ''">
+          <input type="tel" pattern="\d*" class="form-control input_numeric_field"
+                 placeholder="{{ 'expiredat' | translate }}" name="expiry"
+                 card-expiry id="expiry" (ngModelChange)="listenChange($event)" [(ngModel)]="card.expiry"
+                 #expiry (keyup)="validateExpiry()"
+                 (keydown.backspace)="tryBack('expiry')"
+                 appCleaveJS
+                 [options]="expiry_options">
+        </div>
+        <div class="col-xs-6 pos_relative pad_lft_5 wow zoomIn" data-wow-duration="0.1" data-wow-delay="0.1">
+          <div class="pos_relative"
+               [class.has-error]="isCardCVVError && card.cvv != ''">
+            <input type="password" class="form-control input_numeric_field" id="email"
+                   placeholder="{{ 'entercvv' | translate }}" name="cvc"
+                   card-cvc [type]="cvv_type" (ngModelChange)="listenChange($event)" [(ngModel)]="card.cvv" #cvv
+                   (keyup)="validateCVC()"
+                   (focus)="showCardView('cvv')"
+                   (blur)="hideOnBlur('cvv')" (keydown.backspace)="tryBack('cvv')" maxlength="5">
+
+            <span *ngIf="card.cvv.length > 0" (click)="changeCvvInputType()" class="cvv_eye_icon"><i
+              class="fa fa-eye"></i></span>
+            <img *ngIf="card.cvv.length <= 0" (mouseenter)="cvc_zoom = true" (mouseleave)="cvc_zoom = false" class="cvc_icon" [src]="'assets/checkout_assets/img/cards/cvc.svg'"
+                 alt="">
+            <img *ngIf="(!isMobile || !isFull) && cvc_zoom"  #cvc_img class="cvc_icon hover_cvc" [src]="'assets/images/cvc_hover.svg'"
+                 alt="">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="pos_relative wow zoomIn" data-wow-duration="0.1" data-wow-delay="0.1">
+            <input type="text" class="card_hide_field form-control" maxlength="25"
+                   placeholder="{{ 'entercardholdname' | translate }}" name="name"
+                   card-name (ngModelChange)="listenChange($event)" [(ngModel)]="card.name" #name
+                   (keyup)="validateName()"
+                   (focus)="showCardView('name')"
+                   (blur)="hideOnBlur('name')" (keydown.backspace)="tryBack('name')"
+            >
+          </div>
+        </div>
+      </div>
+      <div *ngIf="isLoggedIn && cards_list && cards_list.length > 0" class="row wow zoomIn" data-wow-duration="0.1"
+           data-wow-delay="0.1">
+        <div class="col-md-12">
+          <span class="pull-left back_my_cards">
+            <a href="javascript:void(0)" (click)="changeView('cards-list')" class="back_my_cards">{{ "my_cards" | translate }}</a>
+            <!--<a *ngIf="!isLoggedIn && existingUser" href="javascript:void(0)" (click)="currentStep='remember-number'" class="back_my_cards">My Cards</a>-->
+          </span>
+          <!--<a href="javascript:void(0)" *ngIf="!isLoggedIn" class="pull-left supported_card">-->
+          <!--<img [src]="'assets/images/support-cards.png'" alt="">-->
+          <!--</a>-->
+          <!--<a class="pull-right back_to_card" data-toggle="tab" href="#menu1" (click)="changeView('cards')">-->
+          <!--<img [src]="'assets/checkout_assets/img/cards/new-card.png'" alt=""> {{ 'ocards' | translate }}-->
+          <!--</a>-->
+        </div>
+      </div>
+      <div class="form-group remember_card_block wow zoomIn" data-wow-duration="0.1" data-wow-delay="0.1">
+        <label class="form-check-label checkbox-inline">
+          <input type="checkbox" name="que_1" id="remember_check"
+                 [disabled]="card.number == '' || card.expiry == '' || card.cvv == '' || card.name == ''"
+                 (ngModelChange)="listenChange($event); card.save = !card.save" [(ngModel)]="card.save"
+                 #save>
+          <span class="label-text">{{ 'remember' | translate }}</span>
+        </label>
+        <div class="pull-right" [hidden]="!card.save">
+          <!--<div class="pull-right">-->
+          <span class="remember_tooltip_icon">
+            <ng-template #rememberTooltip>We use <img width='80' src='/assets/checkout_assets/img/cards/sslcommerz.png'>  to securely store your payment info for quick checkout on this site and others. <a
+              href='https://api-epay.sslcommerz.com/docs/' target="_blank">More Info</a></ng-template>
+            <span class="remember_tooltip_text" placement="{{ (isFull || isMobile) ? 'left' : 'right'}}"
+                  triggers="click"
+                  [ngbTooltip]="rememberTooltip">
+              <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 612 612" style="enable-background:new 0 0 612 612;" xml:space="preserve">
+                <style type="text/css">
+                .st4 {
+                  fill: #ef6c00;
+                }
+                </style>
+                <g>
+                  <g>
+                    <path class="st4" d="M230.724,181.208c-2.393,2.587-3.95,4.256-5.119,5.508C227.775,184.379,230.724,181.208,230.724,181.208z"/>
+                    <path class="st4" d="M336.962,200.875c7.956,9.792,11.906,21.337,11.906,34.634c0,9.514-2.727,18.666-8.151,27.512
+                    c-2.977,5.007-6.898,9.848-11.795,14.465l-16.301,16.107c-15.634,15.356-25.732,28.958-30.35,40.865
+                    c-4.618,11.878-6.927,27.54-6.927,46.957h36.275c0-17.108,1.947-30.044,5.814-38.807c3.866-8.763,12.323-19.444,25.37-32.102
+                    c17.942-17.387,29.849-30.572,35.746-39.53s8.874-20.641,8.874-35.051c0-23.756-8.039-43.285-24.146-58.585
+                    c-16.106-15.3-37.526-22.922-64.288-22.922c-28.931,0-51.686,8.929-68.266,26.789s-24.87,41.449-24.87,70.797h36.275
+                    c0.667-17.665,3.478-31.184,8.346-40.559c8.679-16.83,24.369-25.259,47.068-25.259
+                    C315.875,186.187,329.033,191.083,336.962,200.875z"/>
+                    <path class="st4" d="M612,306C612,137.004,474.995,0,306,0C137.004,0,0,137.004,0,306c0,168.995,137.004,306,306,306
+                    C474.995,612,612,474.995,612,306z M27.818,306C27.818,152.36,152.36,27.818,306,27.818S584.182,152.36,584.182,306
+                    S459.64,584.182,306,584.182S27.818,459.64,27.818,306z"/>
+                    <rect class="st4" x="274.51" y="415.214" width="40.559" height="42.367"/>
+                  </g>
+                </g>
+              </svg>
+            </span>
+          </span>
+        </div>
+        <p class="terms_condition_text">{{ 'terms' | translate }} <a
+          href="https://api-epay.sslcommerz.com/docs/terms.html" target="_blank">{{ 'term' | translate }} {{ 'and' |
+          translate}} {{ 'condition' | translate }}</a></p>
+      </div>
+    </div>
+
+    <ng-container>
+      <div *ngIf="( (card.number != '' && card.expiry != '' && card.cvv != '')
+       && currentStep == 'entry-page' && card.save && !isLoggedIn)
+       || currentStep == 'remember-number'"
+           id="remember_card_mobile" class="remember_card_mobile" style="padding-top: 0 !important;">
+        <div class="col-md-12">
+          <p *ngIf="existingUser && !isLoggedIn" class="welcome_msg">{{ 'welcome_back' | translate }}, <br><b>{{
+            session.data.session_data.meta.CustomerName }}</b></p>
+          <ng-container *ngIf="(card.save && !isLoggedIn) || (existingUser && !isLoggedIn) || (!card.save && forceLoginPage)">
+            <p *ngIf="existingUser">{{ 'already_registered' | translate }} <b>{{ 'mobile_no' | translate }}</b>{{
+              'full_stop' | translate }}</p>
+            <p *ngIf="!existingUser">{{ 'verify_mobile' | translate }} <b>{{ 'mobile_no' | translate }}</b>{{
+              'full_stop' | translate }}</p>
+            <div class="input_with_button">
+              <input type="tel" maxlength="11" class="form-control keyup_fuction mt-15" id="cardPhone"
+                     placeholder="Mobile Number" (focus)="editing = true"
+                     [readonly]="!editing && card.phone != ''" [disabled]="!editing && card.phone != ''" #cardphone
+                     [(ngModel)]="card.phone"
+                     name="card-number" value="">
+              <img class="mobile_bd_flag" [src]="'assets/checkout_assets/img/cards/bangladesh.png'" alt="">
+              <button [disabled]="this.card && this.card.phone.length != 11"
+                      [ngClass]="{'next_active' : this.card && this.card.phone.length == 11 }"
+                      (click)="sendCheckoutOTP(); startTimer();" class="btn_next_step mobile_confirm_click"
+                      type="button"
+                      name="button">
+                {{ 'verify' | translate }}
+              </button>
+            </div>
+            <span class="pull-left">
+              <a class="mobile_edit_click" *ngIf="card && card.phone.length > 10"
+                 (click)="phoneEditMode()"
+                 href="javascript:void(0)">{{ 'ChangeNumber' | translate }}</a>
+            </span>
+            <span *ngIf="card && !card.save" class="pull-right"><a class="" (click)="currentStep='entry-page'"
+                                                           href="javascript:void(0)">{{ 'skip_step' | translate }}</a></span>
+            <span><a *ngIf="card && card.phone.length < 10" class="mobile_edit_click_after" href="javascript:void(0)">Ex. <b>01XXXXXXXXX</b></a></span>
+          </ng-container>
+        </div>
+      </div>
+    </ng-container>
+
+    <div *ngIf="currentStep == 'remember-otp'" id="remember_card_otp" class="remember_card_otp inner_fix_height_2nd">
+      <div class="col-md-12">
+        <div class="input-group pos_relative readonly_card_field" *ngIf="this.card.number.length > 10">
+          <img class="card_icon_right icon_active" [src]="'assets/checkout_assets/img/cards/'+this.card.brand+'.png'"
+               alt="">
+          <input id="msg" type="text" class="form-control" name="msg" placeholder="Additional Info"
+                 [value]="'**** **** **** ' + this.card.number.substr(this.card.number.length - 4)" readonly>
+          <span class="input-group-addon" *ngIf="card.emiTenure != null">EMI- {{ card.emiTenure }} Month</span>
+          <span class="input-group-addon" *ngIf="card.emiTenure == null || card.emiTenure == undefined">{{ 'no_emi' | translate }}</span>
+        </div>
+        <p class="pull-left change_card_action" *ngIf="this.card.number.length > 0">
+          <a href="javascript:void(0)" class="" (click)="currentStep = 'entry-page'">{{ 'ChangeCard' | translate }}</a>
+        </p>
+        <p><b>{{ "enter_verification_code" | translate }}</b> {{ "you_have_received" | translate }}</p>
+        <!-- <p><b>Enter the verification code</b> to use the payment info you stored with SSLCommerz.</p> -->
+        <div class="input_with_button">
+          <ul class="otp_input_screen">
+            <li>
+              <input autofocus="autofocus" [disabled]="isLoggedIn" name="otp[]"
+                     (keyup)="keyTab($event, otp1,otp2,1)"  (paste)="onPaste($event)"
+                     [(ngModel)]="otp[0]" #otp1 type="tel" maxlength="1"
+                     class="form-control keyup_fuction otSc mt-15">
+            </li>
+            <li>
+              <input [disabled]="isLoggedIn" name="otp[]"
+                     (keyup)="keyTab($event, otp2, otp3,otp1)"
+                     [(ngModel)]="otp[1]" #otp2 type="tel" maxlength="1"
+                     class="form-control keyup_fuction otSc mt-15">
+            </li>
+            <li>
+              <input [disabled]="isLoggedIn" name="otp[]"
+                     (keyup)="keyTab($event, otp3, otp4,otp2)"
+                     [(ngModel)]="otp[2]" #otp3 type="tel" maxlength="1"
+                     class="form-control keyup_fuction otSc mt-15">
+            </li>
+            <li>
+              <input [disabled]="isLoggedIn" name="otp[]"
+                     (keyup)="keyTab($event, otp4, otp5,otp3)"
+                     [(ngModel)]="otp[3]" #otp4 type="tel" maxlength="1"
+                     class="form-control keyup_fuction otSc mt-15">
+            </li>
+            <li>
+              <input [disabled]="isLoggedIn" name="otp[]"
+                     (keyup)="keyTab($event, otp5, otp6,otp4)"
+                     [(ngModel)]="otp[4]" #otp5 type="tel" maxlength="1"
+                     class="form-control keyup_fuction otSc mt-15">
+            </li>
+            <li>
+              <input [disabled]="isLoggedIn" name="otp[]"
+                     (keyup)="keyTab($event, otp6, 1,otp5)"
+                     [(ngModel)]="otp[5]" #otp6 type="tel" maxlength="1"
+                     class="form-control keyup_fuction keyup_fuction_last otSc mt-15">
+            </li>
+          </ul>
+          <!-- <input type="text" maxlength="6" class="form-control keyup_fuction mt-15 final_keyup_fuction" id="email" placeholder="OTP" name="card-number"> -->
+        </div>
+        <span class="pull-left"><a *ngIf="!numberVerified"
+                                   (click)="card.phone = ''; otp = ['','','','','','']; editing = true;currentStep='remember-number'"
+                                   href="javascript:void(0)" class="previous_mobile_number_edit">{{ "ChangeNumber" | translate }}</a></span>
+        <span class="pull-right" *ngIf="otpTry <= 2">
+          <a *ngIf="timeLeft <= 0 && !isLoggedIn" href="javascript:void(0)"
+             (click)="resendCheckoutOTP(); otp = ['','','','','',''];">{{ 'resend_otp' | translate }}</a>
+          <a *ngIf="timeLeft > 0 && !isLoggedIn"
+             href="javascript:void(0)">{{ timeLeft }} {{ 'sec_left' | translate }}</a>
+        </span>
+        <!-- <p class="with_link pull-left">By clicking the pay button, you agree to our <a href="#">Terms &amp; Conditions</a></p> -->
+      </div>
+    </div>
+
+
+    <!-- EMI -->
+    <div class="row"
+         *ngIf="1!=1&&emiList && emiList.data != undefined && emiList.data != null && emiList.data.data !== undefined && card.emi">
+      <div class="col-md-12">
+        <div class="form-group" style="margin-bottom: 15px;position: relative;"
+             [@slideInOut]="card.emiBank == undefined">
+          <select name="countryControl" (change)="loadTenure($event, emiBank.value)" [(ngModel)]="card.emiBank" #emiBank
+                  class="form-control">
+            <option value="undefined">Select a Bank for EMI</option>
+            <option (select)="i == 0" [value]="emi.emiBankID" *ngFor="let emi of emiList.data.data.emi; let i = index">
+              {{ emi.bankName }}
+            </option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div class="row" *ngIf="1!=1">
+      <!--<div class="row">-->
+      <div class="col-md-10">
+        <div class="form-group" style="margin-bottom: 15px; left: 400px; position: relative"
+             [@subSlideInOut]="showSub">
+          <label *ngIf="currentEmi && card.emi" for="">{{ currentEmi.bankName }}</label>
+          <div class="custom-radios"
+               *ngIf="emiList && emiList.data.data !== undefined && currentEmi != null && card.emi">
+            <select *ngIf="currentEmi != null || currentEmi.emiBankTenureDesc != null"
+                    name="countryControl" [(ngModel)]="card.emiTenure" #emiTenure
+                    class="form-control">
+              <option value="undefined">Select a tenure for EMI</option>
+              <option (select)="i == 0" [value]="tenure.tenure"
+                      *ngFor="let tenure of currentEmi.emiBankTenureDesc; let i = index">
+                <span [innerHTML]="tenure.desc"></span>
+              </option>
+            </select>
+
+            <!--<div *ngFor="let tenure of currentEmi.emiBankTenureList">-->
+            <!--<input type="radio" id="color-{{ tenure}}" name="color" [(ngModel)]="card.emiTenure" #emiTenure value="{{ tenure}}">-->
+            <!--<label for="color-{{ tenure}}">-->
+            <!--<span> {{ tenure }} Months </span>-->
+            <!--</label>-->
+            <!--</div>-->
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2" *ngIf="emiList && emiList.data.data !== undefined && currentEmi != null && card.emi">
+        <a style="display: block;padding-top: 25px;" href="javascript:void(0)"
+           (click)="card.emiBank=undefined;card.emiTenure=undefined;currentEmi=null;showSub=false;">
+          <img [src]="'assets/images/left-arrow.png'" alt="">
+        </a>
+      </div>
+      <div class="clearfix"></div>
+    </div>
+
+    <div class="row" *ngIf="1!=1&&emiList && emiList.data.data !== undefined">
+      <div class="col-md-12">
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label class="form-check-label checkbox-inline">
+            <input type="checkbox" [checked]="!card.emi" (change)="card.emi=!card.emi" #emi name="emi_check"
+                   id="emi_check">
+            <span class="label-text">Pay without EMI options</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- /EMI -->
+
+
+    <div class="row" *ngIf="1!=1">
+      <div class="col-md-12">
+        <input id="ccnum" type="text" card-number (ngModelChange)="listenChange($event)" [(ngModel)]="card.number"
+               #ccnum (keyup)="validateCC()"
+               (focus)="showCardView('number')" (blur)="hideOnBlur('number')" appCleaveJS [options]="number_options"
+               class="form-control input_numeric_field" placeholder="Enter Card Number" name="card-number"
+               maxlength="20">
+      </div>
+    </div>
+    <div class="row" *ngIf="1!=1">
+      <div class="col-6">
+        <input card-expiry id="expiry" type="text" (ngModelChange)="listenChange($event)" [(ngModel)]="card.expiry"
+               #expiry (keyup)="validateExpiry()"
+               (focus)="showCardView('expiry')" (blur)="hideOnBlur('expiry')" (keydown.backspace)="tryBack('expiry')"
+               appCleaveJS
+               [options]="expiry_options" class="form-control input_numeric_field" placeholder="MM/DD" name="expiry"
+               maxlength="7">
+      </div>
+      <div class="col-6 pos_relative">
+        <div class="pos_relative">
+          <input card-cvc [type]="cvv_type" (ngModelChange)="listenChange($event)" [(ngModel)]="card.cvv" #cvv
+                 (keyup)="validateCVC()"
+                 (focus)="showCardView('cvv')"
+                 (blur)="hideOnBlur('cvv')" (keydown.backspace)="tryBack('cvv')"
+                 class="form-control input_numeric_field"
+                 id="cvc" placeholder="CVC/CVV" name="cvv" maxlength="5">
+          <span *ngIf="card.cvv.length > 0" (click)="changeCvvInputType()"
+                style="cursor:pointer; position: absolute; top: 11px; right: 55px; font-size: 18px;"><i
+            class="fa fa-eye"></i></span>
+          <img class="cvc_icon" [src]="'assets/images/cvc.svg'" alt="">
+        </div>
+      </div>
+    </div>
+    <div class="row" *ngIf="1!=1">
+      <div class="col-md-12">
+        <input card-name type="text" (ngModelChange)="listenChange($event)" [(ngModel)]="card.name" #name
+               (keyup)="validateName()"
+               (focus)="showCardView('name')"
+               (blur)="hideOnBlur('name')" (keydown.backspace)="tryBack('name')" class="form-control" id="name"
+               placeholder="Card Holder Name" name="name">
+      </div>
+    </div>
+
+    <div class="row" *ngIf="1!=1" style="display: none">
+      <div class="col-md-12">
+        <input card-name type="text" #name2 class="form-control" placeholder="Card Holder Name" name="card_name">
+      </div>
+    </div>
+
+    <div *ngIf="1!=1" class="form-group">
+      <label class="form-check-label checkbox-inline">
+        <input type="checkbox" (ngModelChange)="listenChange($event); card.save = !card.save" [(ngModel)]="card.save"
+               #save name="remember"
+               id="remember_check">
+        <span class="label-text">Remember Card <span class="text_dark"><a
+          href="javascript:void(0)">(Learn More)</a></span></span>
+      </label>
+      <div class="float-right">
+        <span class="pull-left back_my_cards">
+          <a href="javascript:void(0);" class="back_my_cards">{{ "my_cards" | translate }}</a>
+        </span>
+        <a class="back_to_card" href="javascript:void(0)" (click)="changeView('cards')"><img
+          [src]="'assets/images/left-arrow.png'" alt=""> Back to Selection</a>
+      </div>
+    </div>
+  </div>
+
+
+  <ng-container *ngIf="regMode && 1!=1">
+    <div id="remember_card_mobile" class="row mybox" *ngIf="currentReg == 'phone'">
+      <div class="col-md-12">
+        <p>We securely store your card info for future use &amp; fast checkout in this site &amp; others. For security,
+          please enter your mobile no.or email address.</p>
+        <div class="input_with_button">
+          <input type="text" (ngModelChange)="listenChange($event)" [(ngModel)]="reg.number"
+                 (keyup)="checkRegistered(reg.number)" class="form-control mt-15"
+                 id="regNumber" placeholder="Mobile No."
+                 name="mobile-number" pattern="/^(?:\01)?(?:\d{11}|\d{13})$/" maxlength="11">
+        </div>
+        <span>Ex. <span class="text_dark">880XXXXXXXXXX</span> or <span class="text_dark">x@y.z</span></span>
+        <p class="with_link float-left">By clicking the pay button, you agree to our <a href="#">Terms &amp;
+          Conditions</a></p>
+      </div>
+    </div>
+    <div id="remember_card_otp" class="row inner_fix_height_2nd mybox" *ngIf="currentReg == 'otp'">
+      <div class="col-md-12">
+        <p>We securely store your card info for future use &amp; fast checkout in this site &amp; others. For security,
+          please enter your mobile no.or email address.</p>
+        <div class="input_with_button">
+          <input type="text" (ngModelChange)="listenChange($event)" [(ngModel)]="reg.otp" (keyup)="checkOTP(reg.otp)"
+                 maxlength="6" #otp name="otp"
+                 class="form-control mt-15" id="otp_input" placeholder="OTP">
+        </div>
+        <span class="float-left"><a href="javascript:void(0)" (click)="changeNumber()">Change Number / Email</a></span>
+        <span class="float-right"><a href="javascript:void(0)" (click)="resendOTP()">Resend OTP</a></span>
+        <p class="with_link float-left">By clicking the pay button, you agree to our <a href="#">Terms &amp;
+          Conditions</a></p>
+      </div>
+    </div>
+    <div id="remember_card_password" class="row mybox" *ngIf="currentReg == 'email_password'">
+      <div class="col-md-12">
+        <div class="input_with_button">
+          <input type="email" (ngModelChange)="listenChange($event)" [(ngModel)]="reg.email" #email name="email"
+                 class="form-control mt-15"
+                 placeholder="Email">
+        </div>
+        <div class="input_with_button">
+          <input type="password" class="form-control mt-15" id="password"
+                 placeholder="Create Password" #password (ngModelChange)="listenChange($event)"
+                 [(ngModel)]="reg.password" name="password">
+        </div>
+        <password-strength-meter [password]="reg.password" [enableFeedback]="true" [minPasswordLength]="8"
+                                 (strengthChange)="checkStrength($event)"></password-strength-meter>
+        <p class="with_link float-left">By clicking the pay button, you agree to our <a href="#">Terms &amp;
+          Conditions</a></p>
+      </div>
+    </div>
+    <div id="login_password" class="row mybox" *ngIf="currentReg == 'login_password'">
+      <div class="col-md-12">
+        <p>We securely store your card info for future use &amp; fast checkout in this site &amp; others. For security,
+          please enter your mobile no.or email address.</p>
+        <div class="input_with_button">
+          <input type="password" (ngModelChange)="listenChange($event)" [(ngModel)]="reg.password"
+                 class="form-control mt-15" id="login_pass"
+                 placeholder="Enter Password" name="login_pass">
+        </div>
+        <span class="float-left"><a href="javascript:void(0)" (click)="changeNumber()">Change Number / Email</a></span>
+      </div>
+    </div>
+  </ng-container>
+</form>

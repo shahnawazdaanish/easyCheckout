@@ -1,0 +1,36 @@
+.abs{position:absolute;top:-25px}
+
+.emi{
+
+  width: 30px;
+  height: 30px;
+  background-image: url("../../../assets/images/emi.png");
+
+}
+
+
+.emi p {
+  text-align: center;
+  top: -38px;
+  left: 3px;
+  position: relative;
+  width: auto;
+  height: auto;
+  color:#fff;
+  font-weight:500;
+  font-size:10px;
+  /* Safari */
+  -webkit-transform: rotate(-45deg);
+
+  /* Firefox */
+  -moz-transform: rotate(-45deg);
+
+  /* IE */
+  -ms-transform: rotate(-45deg);
+
+  /* Opera */
+  -o-transform: rotate(-45deg);
+
+  /* Internet Explorer */
+  filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=3);
+}

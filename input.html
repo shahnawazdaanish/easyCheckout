@@ -1,0 +1,21 @@
+<html>
+<head>
+  <script src="./src/assets/js/Cleave.js"></script>
+</head>
+<body>
+
+<form action="">
+  <input type="text" id="incc">
+</form>
+
+<script>
+  new Cleave('#incc', {
+    creditCard: true,
+    onCreditCardTypeChanged: function (type) {
+      //document.querySelector('.type').innerHTML = type;
+      window.card_type = type;
+    }
+  });
+</script>
+</body>
+</html>

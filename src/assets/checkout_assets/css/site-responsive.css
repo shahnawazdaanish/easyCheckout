@@ -1,0 +1,41 @@
+.mobile_device .client_logo {
+  width: 68px;
+  height: 68px;
+  margin: 0px auto 5px;
+}
+.mobile_device .client_logo img {
+  width: 88%;
+}
+.mobile_device .ssl_token_modal .modal-dialog {
+  width: 100%;
+  border-radius: 0;
+}
+.mobile_device .btn_full_width_disable {
+  border-radius: 0;
+}
+.mobile_device .pay_button {
+  position: absolute;
+  left: 0px;
+  right: 0px;
+  width: 100%;
+}
+.mobile_device .ssl_token_modal .modal-header {
+  padding: 15px 0px 0px 0px;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+}
+.mobile_device .banking_tabs {
+  margin-top: 12px;
+}
+.mobile_device ul.payment_item li {
+  text-align: center;
+}
+
+.mobile_device .loading-btn-wrapper {
+  border-radius: 0px !important;
+}
+.mobile_device .save_card_items {
+  margin-bottom: 50px !important;
+}

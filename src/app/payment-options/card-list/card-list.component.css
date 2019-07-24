@@ -1,0 +1,162 @@
+
+
+.custom-radios div {
+  display: inline-block;
+  width: 25%;
+}
+.custom-radios input[type="radio"] {
+  display: none;
+}
+.custom-radios input[type="radio"] + label {
+  color: #333;
+  /*font-family: Arial, sans-serif;*/
+  font-size: 14px;
+  width: 100%;
+  border: 1px solid #d5d5d5;
+  /*padding: 11px 0px;*/
+}
+.custom-radios input[type="radio"] + label span {
+  display: inline-block;
+  width: 100%;
+  /*height: 40px;*/
+  margin: 0;
+  vertical-align: middle;
+  cursor: pointer;
+  /*border: 2px solid #FFFFFF;*/
+  /*box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.33);*/
+  background-repeat: no-repeat;
+  background-position: center;
+  text-align: center;
+  /*line-height: 44px;*/
+  padding: 12px 0px;
+  font-size: 14px;
+  font-weight: 300;
+  color: #3e3f40;
+}
+.custom-radios input[type="radio"] + label span img {
+  opacity: 0;
+  transition: all .3s ease;
+}
+.cuastom-radios input[type="radio"]#color-1 + label span {
+  background-color: #2ecc71;
+}
+.cuastom-radios input[type="radio"]#color-2 + label span {
+  background-color: #3498db;
+}
+.cuastom-radios input[type="radio"]#color-3 + label span {
+  background-color: #f1c40f;
+}
+.cuastom-radios input[type="radio"]#color-4 + label span {
+  background-color: #e74c3c;
+}
+.custom-radios input[type="radio"]:checked + label span {
+  background-color: #2a5da8;
+  color: #fff;
+  opacity: 1;
+  /*background: url(https://s3-us-west-2.amazonaws.com/s.cdpn.io/242518/check-icn.svg) center center no-repeat;
+  width: 40px;
+  height: 40px;
+  display: inline-block;
+  */
+
+}
+select.form-control:not([size]):not([multiple]){
+  height: auto;
+}
+select.form-control {
+  border: 1px solid #d1d5dc;
+  font-size: 14px;
+  border-radius: 2px;
+  padding: 11px 12px;
+  color: #101010;
+  margin-bottom: 10px;
+  /* margin-top: 15px; */
+}
+@media (max-width: 380px) {
+  .custom-radios input[type="radio"] + label span {
+    font-size: 10px;
+    padding: 7px 10px;
+    white-space: nowrap;
+  }
+  select.form-control {
+    font-size: 11px;
+    padding: 6px 10px;
+  }
+}
+
+#login_password {
+  margin: 0px 0px;
+  background: #fafafa;
+  padding: 22px 25px 22px;
+}
+.mybox {
+  overflow: hidden;
+}
+
+
+
+
+
+
+
+
+.anim-wrapper {
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.anim-wrapper-cell {
+  display: flex;
+  margin-bottom: 30px;
+}
+
+@-webkit-keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+
+@keyframes placeHolderShimmer {
+  0% {
+    background-position: -468px 0;
+  }
+  100% {
+    background-position: 468px 0;
+  }
+}
+.animated-background, .anim-image, .anim-text-line {
+  -webkit-animation-duration: 1.25s;
+  animation-duration: 1.25s;
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+  -webkit-animation-name: placeHolderShimmer;
+  animation-name: placeHolderShimmer;
+  -webkit-animation-timing-function: linear;
+  animation-timing-function: linear;
+  background: #F6F6F6;
+  background: linear-gradient(to right, #F6F6F6 8%, #F0F0F0 18%, #F6F6F6 33%);
+  background-size: 800px 104px;
+  height: 96px;
+  position: relative;
+}
+
+.anim-image {
+  height: 45px;
+  width: 60px;
+}
+
+.anim-text {
+  margin-left: 20px;
+}
+
+.anim-text-line {
+  height: 10px;
+  width: 230px;
+  margin: 4px 0;
+}

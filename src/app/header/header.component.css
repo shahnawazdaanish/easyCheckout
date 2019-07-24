@@ -1,0 +1,36 @@
+.ssl_token_back {
+  float: left;
+  font-size: 21px;
+  font-weight: 700;
+  line-height: 1;
+  color: #2a5da8;
+  position: absolute;
+  top: 10px;
+  left: 12px;
+  z-index: 9999;
+  padding: 0;
+  border-radius: 2px;
+  background: transparent;
+  border: 0 none;
+}
+.ssl_token_back svg {
+  width: 8px;
+}
+.ssl_token_back:hover svg path {
+  fill: #2a5da8;
+}
+.easy_lang_switch {
+  position: absolute;
+  right: 50px;
+  top: 11px;
+  z-index: 999;
+  cursor: pointer;
+}
+.easy_lang_switch img,
+.easy_lang_switch svg {
+  width: 19px;
+}
+.easy_lang_switch:hover svg path,
+.easy_lang_switch.lang_active svg path {
+  fill: #2a5da8;
+}

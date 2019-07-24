@@ -1,0 +1,121 @@
+<div class="ssl_token_modal" [style.padding-top]="!forceLogoOff && !isMobile ? '60px' : ''" style="text-align: center;"
+     (resized)="onResized($event)">
+  <div class="modal-dialog">
+    <div class="modal-dialog-inner">
+      <!--<ngx-loading-bar [includeSpinner]="false" [fixed]="false" [height]="'5px'" [color]="'#666'"></ngx-loading-bar>-->
+      <app-header></app-header>
+      <ng-container class="model-body">
+        <div class="payment_token">
+          <div class="" [ngClass]="{'inner_fix_height' : isMobile }">
+            <app-tab-nav (setCurrentViewToTransaction)="changeCurrentView($event)"></app-tab-nav>
+            <app-payment-options></app-payment-options>
+            <!--<ngx-loading-bar [includeSpinner]="false" [fixed]="false" [height]="'5px'" [color]="'#666'"></ngx-loading-bar>-->
+
+          </div>
+
+          <!--<span class="loading-btn-wrapper">-->
+          <!--<button class="loading-btn js_success-animation-trigger">-->
+          <!--<span class="loading-btn__text">-->
+          <!--Submit-->
+          <!--</span>-->
+          <!--</button>-->
+          <!--</span>-->
+          <!--<p class="session_timeout_text">{{ 'session_timeout' | translate }}: <a href="#">10:00s</a></p>-->
+
+          <div class="payment_info" *ngIf="session && session.data && session.data.session_data.meta && session.data.session_data.meta.currency_type && session.data.session_data.meta.currency_type != ''">
+
+            <div class="row">
+              <div class="col-md-5">
+                <p><strong></strong> <strong>1</strong> {{ session.data.session_data.meta.currency_type }} =
+                  <strong>{{ session.data.session_data.meta.currency_rate }}</strong>
+                  {{ session && session.data && session.data.request.currency ? session.data.request.currency : ''}}
+                </p>
+              </div>
+              <div class="col-md-7 text-right">
+                <p style="text-align: right;"><strong>Invoice Amount :</strong>
+                  <strong>
+                    {{ session.data.session_data.meta.currency_amount }}
+                  </strong> {{ session.data.session_data.meta.currency_type }}
+                </p>
+              </div>
+            </div>
+
+          </div>
+          <div id="pay_button" class="loading-btn-wrapper">
+            <button type="button" (click)="sendEventInServer($event);"
+                    [disabled]="!isBtnActive"
+                    [ngClass]="{
+                      'btn_full_width_active' : isBtnActive,
+                      'btn_full_width_disable' : !isBtnActive,
+                      'loading-btn--pending' : btnLoading,
+                      'loading-btn--success' : btnSuccess,
+                      'loading-btn--fail' : btnFailed
+                      }"
+                    class="loading-btn js_success-animation-trigger" disabled="" #pBtn>
+              <img id="tapImg" [ngClass]="[isBtnActive ? 'animated bounce' : '', btnLoading ? 'hidden' : ''  ]" [src]="'assets/checkout_assets/img/tap.svg'" alt="">
+              <span class="loading-btn__text">
+                  {{ 'pay' | translate }}
+                {{ (session && session.data ? session.data.request.amount : '0.00')| number }}  {{ (session && session.data ? session.data.request.currency : '')}}
+                <!--{{ selectedOffer && selectedOffer.payableAMT != '' ?-->
+                <!--selectedOffer.payableAMT : (session && session.data ? session.data.request.amount : '0.00') }}-->
+                </span>
+            </button>
+          </div>
+          <!--<div id="pay_button" class="loading-btn-wrapper wow" data-wow-duration="2s" data-wow-delay="5s">-->
+          <!--<button type="button" (click)="sendEventInServer($event)"-->
+          <!--[disabled]="!isBtnActive"-->
+          <!--[ngClass]="isBtnActive ? 'btn_full_width_active' : 'btn_full_width_disable'"-->
+          <!--class="btn card_payments loading-btn&#45;&#45;success js_success-animation-trigger" disabled="">-->
+          <!--<span class="loading-btn__text">-->
+          <!--pay {{ session && session.data ? session.data.request.amount : '0.00'}}-->
+          <!--</span>-->
+          <!--</button>-->
+          <!--</div>-->
+
+          <!--<hr class="mt-0">-->
+          <!--<app-copyright></app-copyright>-->
+          <div id="pay_button2" class="" *ngIf="1!=1 && currentComp">
+            <!--<button *ngIf="showPayButton()" (click)="sendEventInServer()" type="button" class="btn btn_full_width_active card_payments">-->
+            <!--pay {{ (transaction) ? transaction.request.amount : '0.00' }}-->
+            <!--<img [src]="'assets/images/right-arrow.png'" alt="">-->
+            <!--</button>-->
+            <button *ngIf="showPayButton() && session != null" class="btn" [disabled]="!isBtnActive"
+                    [ngClass]="isBtnActive ? 'btn_full_width_active' : 'btn_full_width_disable'"
+                    (click)="sendEventInServer()">
+              pay {{ (session.data.request.amount) ? session.data.request.amount : '0.00' }}
+              <img [src]="'assets/images/right-arrow.png'" alt="">
+            </button>
+            <button *ngIf="showLoginButton()" class="btn" [disabled]="!isBtnActive"
+                    [ngClass]="isBtnActive ? 'btn_full_width_active' : 'btn_full_width_disable'"
+                    (click)="sendEventInServer()">
+              Login
+              <img [src]="'assets/images/right-arrow.png'" alt="">
+            </button>
+            <button *ngIf="showProcessButton()" class="btn" [disabled]="!isBtnActive"
+                    [ngClass]="isBtnActive ? 'btn_full_width_active' : 'btn_full_width_disable'"
+                    (click)="sendEventInServer()">
+              Process now
+              <img [src]="'assets/images/right-arrow.png'" alt="">
+            </button>
+            <button *ngIf="showResetButton()" class="btn" [disabled]="!isBtnActive"
+                    [ngClass]="isBtnActive ? 'btn_full_width_active' : 'btn_full_width_disable'"
+                    (click)="sendEventInServer()">
+              Reset
+              <img [src]="'assets/images/right-arrow.png'" alt="">
+            </button>
+          </div>
+
+          <!-- LOADING ANIMATION -->
+          <div class="loading_anime" *ngIf="loading">
+            <div class="lds-ripple">
+              <div></div>
+              <div></div>
+            </div>
+          </div>
+
+        </div>
+      </ng-container>
+
+    </div>
+  </div>
+</div>

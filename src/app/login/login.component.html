@@ -1,0 +1,17 @@
+<div  #htmlContainer [innerHTML]="trustedHTML"></div>
+<div id="login" class="row">
+  <div class="col-md-12">
+    <p *ngIf="message" class="text-center error">{{message}}</p>
+    <form [formGroup]="form"  (ngSubmit)="tryLogin()" #loginForm="ngForm">
+      <p class="text-center">Please fill up below form to <span class="text_dark">Login</span></p>
+      <input type="text" [formControlName]="'shaz_username'" class="form-control mt-15" id="email" placeholder="Mobile No. / Email" name="shaz_username" required>
+      <div class="input_with_button">
+        <input type="password" [formControlName]="'shaz_password'" class="form-control keyup_fuction" id="password" placeholder="Password" name="shaz_password" required>
+        <!--<button type="submit" class="btn btn_next_step"><img-->
+          <!--[src]="'assets/images/right-arrow.png'" alt=""></button>-->
+      </div>
+      <p class="float-left"><a href="javascript:void(0)" (click)="showSignUp()">Don't have an Account? Sign Up</a></p>
+      <p class="float-right"><a href="javascript:void(0)" (click)="changeView('forget')">Forgot Password?</a></p>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,28 @@
+<div class="card" *ngIf="1!=1">
+  <ul class="nav nav-tabs" role="tablist">
+    <li class="nav-item" *ngIf="isCardEnabled">
+      <a class="nav-link" [class.active]="activeItem == 'cards'" (click)="changeCurrentView('cards')" data-toggle="tab" href="#home">cards</a>
+    </li>
+    <li class="nav-item" *ngIf="isMobEnabled">
+      <a class="nav-link " [class.active]="activeItem == 'mobile'" (click)="changeCurrentView('mobile')" data-toggle="tab" href="#menu1">mobile <span class="d-sm-inline d-none">banking</span></a>
+    </li>
+    <li class="nav-item" *ngIf="isNetEnabled">
+      <a class="nav-link" [class.active]="activeItem == 'net'" (click)="changeCurrentView('net')" data-toggle="tab" href="#menu2">net <span class="d-sm-inline d-none">banking</span></a>
+    </li>
+  </ul>
+</div>
+<div class="banking_tabs" *ngIf="!isMobile">
+  <ul class="nav nav-tabs">
+    <li class="all_cards" [class.active]="currentView == 'cards-list' || currentView == 'card-entry'" *ngIf="isCardEnabled">
+      <a *ngIf="isLoggedIn" data-toggle="tab" href="#menu1"  (click)="changeCurrentView('cards-list')">{{ 'cards' | translate }}</a>
+      <a *ngIf="!isLoggedIn" data-toggle="tab" href="#menu1"  (click)="changeCurrentView('card-entry')">{{ 'cards' | translate }}</a>
+    </li>
+    <li [class.active]="currentView == 'mobile'">
+      <a [class.active]="currentView == 'mobile'" data-toggle="tab" *ngIf="isMobEnabled" (click)="changeCurrentView('mobile')" href="#menu2">{{ 'mobliebanking' | translate }}</a>
+    </li>
+    <li [class.active]="currentView == 'net'">
+      <a [class.active]="currentView == 'net'"
+         data-toggle="tab" *ngIf="isNetEnabled" (click)="changeCurrentView('net')" href="#menu3">{{ 'netb' | translate }}</a>
+    </li>
+  </ul>
+</div>

@@ -1,0 +1,106 @@
+
+<div class="">
+  <div *ngIf="this.offerList && this.offerList.data && this.offerList.data.data !== undefined">
+    <div class="col-md-12"
+         *ngIf="this.offerList.data.data.discountList !== undefined &&  this.offerList.data.data.discountList.length > 0">
+      <!--<p class="text-center" style="margin-top: 15px;">{{ "click_offer_avail" | translate }}</p>-->
+      <ul class="save_card_items">
+        <li *ngFor="let item of this.offerList.data.data.discountList; let i = index;"
+            (click)="selectOffer(item.AvailDiscountId, item)" >
+          <div class="pull-left discount_text">
+            <div class="pull-left discount_text_inner">
+              <ul class="supported_card">
+                <li *ngIf="item.is_visa == '1'">
+                  <img class="active" [src]="'assets/checkout_assets/img/cards/visa.png'" alt="">
+                </li>
+                <li *ngIf="item.is_master == '1'">
+                  <img class="active" [src]="'assets/checkout_assets/img/cards/mastercard.png'"  alt="">
+                </li>
+                <li *ngIf="item.is_amex == '1'">
+                  <img class="active" [src]="'assets/checkout_assets/img/cards/amex.png'"  alt="">
+                </li>
+              </ul>
+              <h2>{{ item.discountTitle }}</h2>
+              <p>Upto {{ item.MaxDisAmt }} | Ends on {{ item.offerEndOnDate }}</p>
+              <a *ngIf="item != null && item.termNConditionURL != ''" href="{{ item.termNConditionURL }}" target="_blank">Details</a>
+            </div>
+          </div>
+          <div class="pull-right discount_amount">
+            <div class="discount_amount_inner">
+              <h4>{{ item.regularPrice }}</h4>
+              <h3>{{ item.payableAMT }}</h3>
+            </div>
+          </div>
+          <!--<div>-->
+            <!--<img *ngIf="item.hover" class="img-fluid offer_img wow fadeIn" [src]="item.disIMGPath" alt="" style="max-width: 310px">-->
+          <!--</div>-->
+        </li>
+        <!--<li>-->
+          <!--<div class="pull-left discount_text">-->
+            <!--<div class="pull-left discount_text_inner">-->
+              <!--<h2>Pay With Offer</h2>-->
+              <!--<p>Do not meet the requirements</p>-->
+            <!--</div>-->
+          <!--</div>-->
+          <!--<div class="pull-right discount_amount">-->
+            <!--<div class="discount_amount_inner">-->
+              <!--<h3>{{ }}.00</h3>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</li>-->
+      </ul>
+    </div>
+
+    <div class="col-md-12" *ngIf="this.offerList && this.offerList.data && this.offerList.data.data.discountList.length <= 0">
+      <p class="text-center">{{ 'no_offer' | translate }}</p>
+    </div>
+  </div>
+
+  <!-- If not available-->
+  <div class="row" *ngIf="!this.offerList || !this.offerList.data || !this.offerList.data.data" style="margin-top: 25px;">
+    <div class="col-md-12">
+      <p class="text-center">{{ 'no_offer' | translate }}</p>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="col-md-12" *ngIf="1!=1">
+  <div id="available_offers2" class="row" *ngIf="this.offerList && this.offerList.data && this.offerList.data.data !== undefined">
+    <div class="col-md-12"
+         *ngIf="this.offerList.data.data.discountList !== undefined &&  this.offerList.data.data.discountList.length > 0">
+      <p class="text-center">{{ "click_offer_avail" | translate }}</p>
+      <a *ngFor="let item of this.offerList.data.data.discountList; let i = index;" href="javascript:void(0)"
+         (click)="selectOffer(item.AvailDiscountId, item)"
+         (mouseenter)="item.hover = true" (mouseleave)="item.hover = false" style="display: block;">
+        <div class="col-md-12">
+          <p>
+            <img *ngIf="item.is_visa == '1'" [src]="'assets/checkout_assets/img/cards/visa.png'" alt="">
+            <img *ngIf="item.is_master == '1'" [src]="'assets/checkout_assets/img/cards/mastercard.png'" alt="">
+            <img *ngIf="item.is_amex == '1'" [src]="'assets/checkout_assets/img/cards/amex.png'" alt="">
+          </p>
+        </div>
+        <div class="col-md-9">
+          <p> {{ item.discountTitle}}</p>
+          <p [innerHTML] = "item.offerDesc | safeHtml"></p>
+        </div>
+        <div class="col-md-3">
+          <p style="text-decoration: line-through;">{{ item.regularPrice }} </p>
+          <p>{{ item.payableAMT }}</p>
+        </div>
+        <img *ngIf="item.hover" class="img-fluid offer_img" [src]="item.disIMGPath" alt="" style="max-width: 310px">
+      </a>
+    </div>
+    <div class="col-md-12" *ngIf="this.offerList && this.offerList.data && this.offerList.data.data.discountList.length <= 0">
+      <p class="text-center">{{ 'no_offer' | translate }}</p>
+    </div>
+  </div>
+
+  <!-- If not available-->
+  <div class="row" *ngIf="!this.offerList || !this.offerList.data || !this.offerList.data.data" style="margin-top: 25px;">
+    <div class="col-md-12">
+      <p class="text-center">{{ 'no_offer' | translate }}</p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div id="zpay_app_download" class="row">
+  <div class="col-md-12">
+    <p class="text-center mb-10">Scan the QR Code with <span class="text_dark">EasyPAY app</span></p>
+  </div>
+  <div class="col-6 col-md-5">
+    <img class="img-fluid qr_image"
+         [src]="session ? 'https://merchant.sslcommerz.com/web/images/generateQR.php?QR=' + session.data.request.qr_code : ''"
+         alt="">
+  </div>
+  <div class="col-5 col-md-7">
+    <ul class="text-center app_store_list">
+      <li>Get EasyPAY</li>
+      <li><a href="https://play.google.com/store/apps/details?id=com.sswireless.zpay" target="_blank"><img [src]="'assets/images/appstore.svg'" alt=""></a></li>
+      <li><a href="https://itunes.apple.com/WebObjects/MZStore.woa/wa/viewSoftware?id=1328396886&mt=8" target="_blank"><img [src]="'assets/images/playstore.svg'" alt=""></a></li>
+    </ul>
+  </div>
+  <div class="col-md-12 mt-15">
+    <div class="float-left">
+      <a class="back_to_card" href="#"><img [src]="'assets/images/info.png'" alt=""> EasyPAY  Instruction</a>
+    </div>
+    <div class="float-right">
+      <a class="back_to_card" (click)="changeView('cards')" href="javascript:void(0)"><img [src]="'assets/images/left-arrow.png'" alt=""> Back to Selection</a>
+    </div>
+  </div>
+</div>

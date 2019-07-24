@@ -1,0 +1,211 @@
+/*.component-container {*/
+  /*all: initial;*/
+  /*all: unset;*/
+/*}*/
+/**
+--- UI and UX Devlopment Team ---
+  1. Ariful Haque (Subin)
+  2. Abdullah Al Mahmud (Saikat)
+--- Backend Devlopment Team ---
+  1. Shahnawaz Ahmed (Daanish)
+  2. Susanta Roy
+  3. Sajan Poddar
+--- QA Team ---
+  1. Khan Yasir Arafat
+--- Database Team ---
+  1. Ferdous Ahmed
+ **/
+@media (min-width: 1200px) {
+  .container {
+    max-width: 800px;
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Roboto', sans-serif;
+  font-weight: 700;
+}
+
+.btn-xl {
+  text-transform: uppercase;
+  padding: 1.5rem 3rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+}
+
+.bg-black {
+  background-color: #000 !important;
+}
+
+.rounded-pill {
+  border-radius: 5rem;
+}
+
+.navbar-custom {
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background-color: #2a5da8;
+}
+
+.navbar-custom .navbar-brand {
+  text-transform: uppercase;
+  font-size: 1rem;
+  letter-spacing: 0.1rem;
+  font-weight: 700;
+}
+
+.navbar-custom .navbar-nav .nav-item .nav-link {
+  text-transform: uppercase;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.1rem;
+  color: #fff;
+}
+
+header.masthead {
+  position: relative;
+  overflow: hidden;
+  padding-top: calc(7rem + 72px);
+  padding-bottom: 7rem;
+  background: -webkit-gradient(linear, left bottom, left top, from(#92beff), to(#2a5da8));
+  background: linear-gradient(0deg, #2a5da8 0%, #92beff 100%);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: scroll;
+  background-size: cover;
+}
+
+header.masthead .masthead-content {
+  z-index: 1;
+  position: relative;
+}
+
+header.masthead .masthead-content .masthead-heading {
+  font-size: 4rem;
+}
+
+header.masthead .masthead-content .masthead-subheading {
+  font-size: 2rem;
+}
+
+header.masthead .bg-circle {
+  z-index: 0;
+  position: absolute;
+  border-radius: 100%;
+  background: -webkit-gradient(linear, left bottom, left top, from(#2a5da8), to(#92beff));
+  background: linear-gradient(0deg, #2a5da8 0%, #92beff 100%);
+}
+
+header.masthead .bg-circle-1 {
+  height: 90rem;
+  width: 90rem;
+  bottom: -55rem;
+  left: -55rem;
+}
+
+header.masthead .bg-circle-2 {
+  height: 50rem;
+  width: 50rem;
+  top: -25rem;
+  right: -25rem;
+}
+
+header.masthead .bg-circle-3 {
+  height: 20rem;
+  width: 20rem;
+  bottom: -10rem;
+  right: 5%;
+}
+
+header.masthead .bg-circle-4 {
+  height: 30rem;
+  width: 30rem;
+  top: -5rem;
+  right: 35%;
+}
+
+@media (min-width: 992px) {
+  header.masthead {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+  header.masthead .masthead-content .masthead-heading {
+    font-size: 3rem;
+  }
+  header.masthead .masthead-content .masthead-subheading {
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+}
+section {
+  background: -webkit-linear-gradient(#d7e3eb,#f5f8fa) fixed;
+  background: linear-gradient(#d7e3eb,#f5f8fa) fixed;
+}
+.img-thumbnail {
+  border-color: #2a5da8;
+}
+.bg-primary {
+  background-color: #ee0979 !important;
+}
+
+.btn-primary {
+  background-color: #ee0979;
+  border-color: #ee0979;
+}
+
+.btn-primary:active, .btn-primary:focus, .btn-primary:hover {
+  background-color: #bd0760 !important;
+  border-color: #bd0760 !important;
+}
+
+.btn-primary:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(238, 9, 121, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(238, 9, 121, 0.5);
+}
+
+.btn-secondary {
+  background-color: #ff6a00;
+  border-color: #ff6a00;
+}
+
+.btn-secondary:active, .btn-secondary:focus, .btn-secondary:hover {
+  background-color: #cc5500 !important;
+  border-color: #cc5500 !important;
+}
+
+.btn-secondary:focus {
+  -webkit-box-shadow: 0 0 0 0.2rem rgba(255, 106, 0, 0.5);
+  box-shadow: 0 0 0 0.2rem rgba(255, 106, 0, 0.5);
+}
+@media (max-width: 768px) {
+  header.masthead {
+    padding-top: 3.5rem;
+    padding-bottom: 3.5rem;
+  }
+  header.masthead .masthead-content .masthead-heading {
+    font-size: 3rem;
+  }
+  header.masthead .masthead-content .masthead-subheading {
+    font-size: 1.2rem;
+    font-weight: 400;
+  }
+}
+@media (max-width: 680px) {
+  header.masthead {
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  header.masthead .masthead-content .masthead-heading {
+    font-size: 1.7rem;
+  }
+  header.masthead .masthead-content .masthead-subheading {
+    font-size: 0.9rem;
+    font-weight: 400;
+  }
+}

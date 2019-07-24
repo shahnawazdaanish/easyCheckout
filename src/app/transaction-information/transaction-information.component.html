@@ -1,0 +1,23 @@
+<!-- IF Session is timed out-->
+<ng-container>
+  <hr>
+  <div id="transaction_details" class="row" *ngIf="session != null && session.status.toLowerCase() === 'success'">
+    <div class="col-md-12">
+      <p>Transaction ID: {{ session.data.request.is_tokenize == 1 ? "T" : "N" }}-
+        <!--<span class="text_dark" *ngIf="!isSessionTimedOut &&transaction != null">{{ transaction.request != null ? transaction.request.merchant_trx_id : '' }}</span>-->
+        <span class="text_dark" *ngIf="session.data.request != null">
+          {{ session.data.request.tran_id }}
+        </span>
+        <span class="text_dark" *ngIf="session.data.request == null">NA</span>
+      </p>
+      <h3 *ngIf="session.data.request != null">Amount:
+        <span class="amount_to_pay text_dark">
+          <small>{{ session.data.request.currency }}</small>
+          {{ session.data.request.amount }}
+        </span>
+        <a href="javascript:void(0)" (click)="changeView('download-app')">Pay with Easy </a>
+      </h3>
+      <h3 *ngIf="session.data.request == null">Amount: NA</h3>
+    </div>
+  </div>
+</ng-container>

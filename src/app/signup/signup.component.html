@@ -1,0 +1,67 @@
+<div *ngIf="current_view == 'mobile'" id="remember_card_mobile" class="row">
+  <div class="col-md-12">
+    <p>We securely store your card info for future use &amp; fast checkout in this site &amp; others. For security,
+      please enter your mobile no.</p>
+    <p>Enter your mobile number</p>
+    <div class="input_with_button">
+      <input [(ngModel)]="signup.number" #phonno appCleaveJS [options] = "number_format" (keyup)="phoneNumberTyping()" maxlength="13" type="text" class="form-control keyup_fuction mt-15" id="phone_number" placeholder="Mobile No."
+             name="card-number">
+    </div>
+    <span>Ex. <span class="text_dark">880XXXXXXXXXX</span></span>
+    <p class="with_link float-left">By clicking the pay button, you agree to our <a href="#">Terms &amp; Conditions</a></p>
+  </div>
+</div>
+
+
+<div *ngIf="current_view === 'otp'" id="remember_card_otp" class="row inner_fix_height_2nd">
+  <div class="col-md-12">
+    <p>We securely store your card info for future use &amp; fast checkout in this site &amp; others. For security,
+      please enter your mobile no.or email address.</p>
+    <div class="input_with_button">
+      <input [(ngModel)]="signup.otp" #otp (keyup)="OTPNumberTyping()" type="text" class="form-control keyup_fuction mt-15" id="otp" placeholder="OTP" name="card-number" maxlength="15">
+    </div>
+    <span class="float-left"><a href="javascript:void(0)" (click)="current_view = 'mobile'">Change Number / Email</a></span>
+    <span class="float-right"><a href="javascript:void(0)" (click)="GetOTPByNumber()">Resend OTP</a></span>
+    <p class="with_link float-left">By clicking the pay button, you agree to our <a href="javascript:void(0)">Terms &amp; Conditions</a>
+    </p>
+  </div>
+</div>
+
+
+<div *ngIf="current_view == 'info'" id="remember_card_password" class="row">
+  <div class="col-md-12">
+    <p>We securely store your card info for future use &amp; fast checkout in this site &amp; others. For security,
+      please enter your mobile no.or email address.</p>
+    <div class="row">
+      <div class="col-md-12">
+        <input [(ngModel)]="signup.email" #email (keyup)="EmailTyping()" type="email" class="form-control mt-15" id="email" placeholder="Email Address" name="card-number">
+      </div>
+    </div>
+    <div class="input_with_button">
+      <input [(ngModel)]="signup.password" #password (keyup)="EmailTyping()" type="password" class="form-control mt-15 keyup_fuction final_keyup_fuction" id="password"
+             placeholder="Password" name="card-number">
+    </div>
+    <span class="float-right pos_relative">
+                  Password Strength:
+      <!-- <small class="pass_week">Weak <img src="images/info.png"  tabindex="0" role="button" data-toggle="popover" data-placement="top" data-popover-content="#unique-id" alt=""> -->
+                  <small class=" password_strength pass_week">Weak <img src="images/info.png" alt="">
+                  </small>
+                  <div id="password_text" class="animated">
+                    <ul>
+                      <li>Minimum 8 characters in length</li>
+                      <li>
+                        Contains 3/4 of the following items:
+                        <ul>
+                          <li>- Uppercase Letters</li>
+                          <li>- Lowercase Letters</li>
+                          <li>- Numbers</li>
+                          <li>- Special Characters</li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </span>
+    <p class="with_link float-left">By clicking the pay button, you agree to our <a href="#">Terms &amp; Conditions</a>
+    </p>
+  </div>
+</div>

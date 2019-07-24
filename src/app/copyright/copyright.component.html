@@ -1,0 +1,15 @@
+<div id="copyright_info" class="row">
+  <div class="col-4">
+    <img class="img-fluid" src="assets/images/pci-dss.png" alt="">
+  </div>
+  <div class="col-4">
+    <ul class="tabs_dots text-center">
+      <li *ngIf="isCardEnabled" [class.active]="currentComp === 'cards'"></li>
+      <li *ngIf="isMobEnabled" [class.active]="currentComp === 'mobile'"></li>
+      <li *ngIf="isNetEnabled" [class.active]="currentComp === 'net'"></li>
+    </ul>
+  </div>
+  <div class="col-4">
+    <img class="img-fluid float-right" src="assets/images/sslcommerz.png" alt="">
+  </div>
+</div>
