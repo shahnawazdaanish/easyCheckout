@@ -32,7 +32,7 @@
     "angular-io-slimscroll": "^2.3.3",
     "angular-password-strength-meter": "0.0.4",
     "angular-resize-event": "^1.0.0",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "cleave.js": "^1.4.10",
     "core-js": "^2.5.4",
     "fast-average-color": "^4.3.0",
